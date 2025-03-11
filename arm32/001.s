@@ -3,7 +3,7 @@
 .global _start
 
 .section .data
-prompt: 	.asciz 	"enter anything you want\n"
+prompt: 	.asciz 	"enter a string to echo\n"
 prompt_len: 	.word 	. - prompt	@automatically calculate the lengh
 
 .section .text
@@ -23,13 +23,13 @@ _start:
 	mov r7, #0x03	@read syscall
 	swi 0
 	ldr r1, =input_len
-	str r0, [r1]	@[input_len] = r0 = return value
+	strb r0, [r1]	@[input_len] = r0 = return value
 
 	@echo back what is read	
 	mov r0, #1 	@fd = STDOUT
 	ldr r1, =buffer
 	ldr r2, =input_len
-	ldr r2, [r2]	
+	ldrb r2, [r2]	
 	mov r7, #0x04	@write syscall
 	swi 0
 
@@ -43,5 +43,5 @@ _start:
 .section .bss
 .equ BUFFER_MAX_LENGTH, 10
 buffer: 	.space 	BUFFER_MAX_LENGTH	@set aside 10 bytes of data 
-input_len:	.space 	4			@max value will be 10, so 1 byte is sufficient
+input_len:	.space 	1			@max value will be 10, so 1 byte is sufficient
 
