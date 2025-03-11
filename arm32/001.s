@@ -28,6 +28,7 @@ _start:
 	mov r7, #0x03	@read syscall
 	swi 0
 	ldr r1, =input_len
+	add r0, r0, #48	@convert to ASCII
 	strb r0, [r1]	@[input_len] = r0 = return value
 
 	@echo back what is read	
@@ -36,6 +37,11 @@ _start:
 	ldr r2, =input_len
 	ldrb r2, [r2]	
 	mov r7, #0x04	@write syscall
+	swi 0
+
+	@print out number of bytes read	
+	ldr r1, =input_len
+	mov r2, #1
 	swi 0
 
 	@exit the program
